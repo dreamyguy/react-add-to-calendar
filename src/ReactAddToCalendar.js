@@ -1,11 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import helpersClass from "./ReactAddToCalendarHelpers";
+import helpersClass from './ReactAddToCalendarHelpers';
 const helpers = new helpersClass();
+const isIos = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)
+const openMode = isIos ? '_self' : '_blank';
 
 export default class ReactAddToCalendar extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -17,10 +19,10 @@ export default class ReactAddToCalendar extends Component {
     this.handleDropdownLinkClick = this.handleDropdownLinkClick.bind(this);
   }
 
-  componentWillMount() {
+  componentWillMount () {
     // polyfill for startsWith to fix IE bug
     if (!String.prototype.startsWith) {
-      String.prototype.startsWith = function(searchString, position) {
+      String.prototype.startsWith = function (searchString, position) {
         position = position || 0;
         return this.indexOf(searchString, position) === position;
       };
@@ -28,7 +30,7 @@ export default class ReactAddToCalendar extends Component {
 
     let isCrappyIE = false;
     if (
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window.navigator.msSaveOrOpenBlob &&
       window.Blob
     ) {
@@ -38,52 +40,50 @@ export default class ReactAddToCalendar extends Component {
     this.setState({ isCrappyIE: isCrappyIE });
   }
 
-  toggleCalendarDropdown() {
+  toggleCalendarDropdown () {
     let showOptions = !this.state.optionsOpen;
 
     if (showOptions) {
-      document.addEventListener("click", this.toggleCalendarDropdown, false);
+      document.addEventListener('click', this.toggleCalendarDropdown, false);
     } else {
-      document.removeEventListener("click", this.toggleCalendarDropdown);
+      document.removeEventListener('click', this.toggleCalendarDropdown);
     }
 
     this.setState({ optionsOpen: showOptions });
   }
 
-  handleDropdownLinkClick(e) {
+  handleDropdownLinkClick (e) {
     e.preventDefault();
-    let url = e.currentTarget.getAttribute("href");
+    let url = e.currentTarget.getAttribute('href');
 
     if (
       !helpers.isMobile() &&
-      (url.startsWith("data") || url.startsWith("BEGIN"))
+      (url.startsWith('data') || url.startsWith('BEGIN'))
     ) {
-      let filename = "download.ics";
-      let blob = new Blob([url], { type: "text/calendar;charset=utf-8" });
+      let filename = 'download.ics';
+      let blob = new Blob([url], { type: 'text/calendar;charset=utf-8' });
 
       if (this.state.isCrappyIE) {
         window.navigator.msSaveOrOpenBlob(blob, filename);
       } else {
         // many browsers do not properly support downloading data URIs
-        // (even with "download" attribute in use) so this solution
+        // (even with 'download' attribute in use) so this solution
         // ensures the event will download cross-browser
-        let link = document.createElement("a");
+        let link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        link.setAttribute("download", filename);
+        link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       }
     } else {
-      const isIos = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)
-      const openMode = isIos ? '_self' : '_blank';
       window.open(url, openMode);
     }
 
     this.toggleCalendarDropdown();
   }
 
-  renderDropdown() {
+  renderDropdown () {
     let self = this;
 
     let items = this.props.listItems.map(listItem => {
@@ -93,14 +93,14 @@ export default class ReactAddToCalendar extends Component {
       return (
         <li key={helpers.getRandomKey()}>
           <a
-            className={currentItem + "-link"}
+            className={currentItem + '-link'}
             onClick={self.handleDropdownLinkClick}
             href={helpers.buildUrl(
               self.props.event,
               currentItem,
               self.state.isCrappyIE
             )}
-            target="_blank"
+            target={openMode}
           >
             {currentLabel}
           </a>
@@ -115,11 +115,11 @@ export default class ReactAddToCalendar extends Component {
     );
   }
 
-  renderButton() {
+  renderButton () {
     let buttonLabel = this.props.buttonLabel;
 
     let buttonClass = this.state.optionsOpen
-      ? this.props.buttonClassClosed + " " + this.props.buttonClassOpen
+      ? this.props.buttonClassClosed + ' ' + this.props.buttonClassOpen
       : this.props.buttonClassClosed;
 
     return (
@@ -131,7 +131,7 @@ export default class ReactAddToCalendar extends Component {
     );
   }
 
-  render() {
+  render () {
     let options = null;
     if (this.state.optionsOpen) {
       options = this.renderDropdown();
@@ -151,7 +151,7 @@ export default class ReactAddToCalendar extends Component {
   }
 }
 
-ReactAddToCalendar.displayName = "Add To Calendar";
+ReactAddToCalendar.displayName = 'Add To Calendar';
 
 ReactAddToCalendar.propTypes = {
   buttonClassClosed: PropTypes.string,
@@ -173,26 +173,26 @@ ReactAddToCalendar.propTypes = {
 };
 
 ReactAddToCalendar.defaultProps = {
-  buttonClassClosed: "react-add-to-calendar__button",
-  buttonClassOpen: "react-add-to-calendar__button--light",
-  buttonLabel: "Add to My Calendar",
-  buttonTemplate: { textOnly: "none" },
-  buttonWrapperClass: "react-add-to-calendar__wrapper",
+  buttonClassClosed: 'react-add-to-calendar__button',
+  buttonClassOpen: 'react-add-to-calendar__button--light',
+  buttonLabel: 'Add to My Calendar',
+  buttonTemplate: { textOnly: 'none' },
+  buttonWrapperClass: 'react-add-to-calendar__wrapper',
   optionsOpen: false,
-  dropdownClass: "react-add-to-calendar__dropdown",
+  dropdownClass: 'react-add-to-calendar__dropdown',
   event: {
-    title: "Sample Event",
-    description: "This is the sample event provided as an example only",
-    location: "Portland, OR",
-    startTime: "2016-09-16T20:15:00-04:00",
-    endTime: "2016-09-16T21:45:00-04:00"
+    title: 'Sample Event',
+    description: 'This is the sample event provided as an example only',
+    location: 'Portland, OR',
+    startTime: '2016-09-16T20:15:00-04:00',
+    endTime: '2016-09-16T21:45:00-04:00'
   },
   listItems: [
-    { apple: "Apple Calendar" },
-    { google: "Google" },
-    { outlook: "Outlook" },
-    { outlookcom: "Outlook.com" },
-    { yahoo: "Yahoo" }
+    { apple: 'Apple Calendar' },
+    { google: 'Google' },
+    { outlook: 'Outlook' },
+    { outlookcom: 'Outlook.com' },
+    { yahoo: 'Yahoo' }
   ],
-  rootClass: "react-add-to-calendar"
+  rootClass: 'react-add-to-calendar'
 };
