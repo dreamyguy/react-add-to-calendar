@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import helpersClass from "./helpers";
+import helpersClass from "./ReactAddToCalendarHelpers";
 const helpers = new helpersClass();
 
 export default class ReactAddToCalendar extends Component {
@@ -64,11 +64,9 @@ export default class ReactAddToCalendar extends Component {
       if (this.state.isCrappyIE) {
         window.navigator.msSaveOrOpenBlob(blob, filename);
       } else {
-        /****************************************************************
         // many browsers do not properly support downloading data URIs
         // (even with "download" attribute in use) so this solution
         // ensures the event will download cross-browser
-        ****************************************************************/
         let link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
         link.setAttribute("download", filename);
@@ -77,7 +75,9 @@ export default class ReactAddToCalendar extends Component {
         document.body.removeChild(link);
       }
     } else {
-      window.open(url, "_blank");
+      const isIos = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)
+      let openMode = isIos ? '_self' : '_blank';
+      window.open(url, openMode);
     }
 
     this.toggleCalendarDropdown();

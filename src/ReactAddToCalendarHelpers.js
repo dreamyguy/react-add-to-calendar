@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export default class helpers {
+export default class ReactAddToCalendarHelpers {
   getRandomKey() {
     let n = Math.floor(Math.random() * 999999999999).toString();
     return new Date().getTime().toString() + "_" + n;
