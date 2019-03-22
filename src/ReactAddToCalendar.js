@@ -76,7 +76,7 @@ export default class ReactAddToCalendar extends Component {
       }
     } else {
       const isIos = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)
-      let openMode = isIos ? '_self' : '_blank';
+      const openMode = isIos ? '_self' : '_blank';
       window.open(url, openMode);
     }
 
