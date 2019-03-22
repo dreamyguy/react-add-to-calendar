@@ -1,11 +1,12 @@
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/ReactAddToCalendar',
+  entry: ['./src/ReactAddToCalendar'],
   output: {
     libraryTarget: 'umd',
     library: 'ReactAddToCalendar',
-    path: './dist/'
+    path: __dirname + '/dist/',
+    publicPath: '/'
   },
   module: {
     loaders: [

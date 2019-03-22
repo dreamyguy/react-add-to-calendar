@@ -57,8 +57,6 @@ let event = {
 <AddToCalendar event={event} />
 ```
 
-See [here](https://github.com/jasonsalzman/react-add-to-calendar/blob/master/docs/ReactAddToCalendar.md) for a full list of props that may be passed to the component. Examples are given on the [main website](https://jasonsalzman.github.io/react-add-to-calendar).
-
 ## Compatibility
 
 ### React
@@ -79,9 +77,6 @@ Unfortunately it is difficult to support legacy browsers while maintaining the a
 The `master` branch contains the latest version of the Add to Calendar component. To start your example app, you can run `npm start`. This starts a simple webserver on http://localhost:8080.
 
 You can run `npm test` to execute the test suite and linters. To help you develop the component I’ve set up some tests that covers the basic functionality (can be found in  `/tests`). I highly recommend you add tests when you’re adding new functionality.
-
-### The examples
-The examples are hosted within the docs folder and are ran in the simple add that loads the Add to Calendar button. To extend the examples with a new example, you can simply duplicate one of the existing examples and change the unique properties of your example.
 
 ## License
 

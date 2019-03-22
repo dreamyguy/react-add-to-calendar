@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import helpersClass from "./helpers";
 const helpers = new helpersClass();
 
-export default class ReactAddToCalendar extends React.Component {
+export default class ReactAddToCalendar extends Component {
   constructor(props) {
     super(props);
 
@@ -90,15 +90,6 @@ export default class ReactAddToCalendar extends React.Component {
       let currentItem = Object.keys(listItem)[0];
       let currentLabel = listItem[currentItem];
 
-      let icon = null;
-      if (self.props.displayItemIcons) {
-        let currentIcon =
-          currentItem === "outlook" || currentItem === "outlookcom"
-            ? "windows"
-            : currentItem;
-        icon = <i className={"fa fa-" + currentIcon} />;
-      }
-
       return (
         <li key={helpers.getRandomKey()}>
           <a
@@ -111,7 +102,6 @@ export default class ReactAddToCalendar extends React.Component {
             )}
             target="_blank"
           >
-            {icon}
             {currentLabel}
           </a>
         </li>
@@ -127,38 +117,6 @@ export default class ReactAddToCalendar extends React.Component {
 
   renderButton() {
     let buttonLabel = this.props.buttonLabel;
-    let buttonIcon = null;
-    let template = Object.keys(this.props.buttonTemplate);
-
-    if (template[0] !== "textOnly") {
-      const iconPlacement = this.props.buttonTemplate[template];
-      const buttonClassPrefix =
-        this.props.buttonIconClass === "react-add-to-calendar__icon--"
-          ? `${this.props.buttonIconClass}${iconPlacement}`
-          : this.props.buttonIconClass;
-      const iconPrefix = this.props.useFontAwesomeIcons ? "fa fa-" : "";
-
-      const mainButtonIconClass =
-        template[0] === "caret"
-          ? this.state.optionsOpen ? "caret-up" : "caret-down"
-          : template[0];
-
-      let buttonIconClass = `${buttonClassPrefix} ${iconPrefix}${mainButtonIconClass}`;
-
-      buttonIcon = <i className={buttonIconClass} />;
-      buttonLabel =
-        iconPlacement === "right" ? (
-          <span>
-            {buttonLabel + " "}
-            {buttonIcon}
-          </span>
-        ) : (
-          <span>
-            {buttonIcon}
-            {" " + buttonLabel}
-          </span>
-        );
-    }
 
     let buttonClass = this.state.optionsOpen
       ? this.props.buttonClassClosed + " " + this.props.buttonClassOpen
@@ -200,10 +158,7 @@ ReactAddToCalendar.propTypes = {
   buttonClassOpen: PropTypes.string,
   buttonLabel: PropTypes.string,
   buttonTemplate: PropTypes.object,
-  buttonIconClass: PropTypes.string,
-  useFontAwesomeIcons: PropTypes.bool,
   buttonWrapperClass: PropTypes.string,
-  displayItemIcons: PropTypes.bool,
   optionsOpen: PropTypes.bool,
   dropdownClass: PropTypes.string,
   event: PropTypes.shape({
@@ -221,11 +176,8 @@ ReactAddToCalendar.defaultProps = {
   buttonClassClosed: "react-add-to-calendar__button",
   buttonClassOpen: "react-add-to-calendar__button--light",
   buttonLabel: "Add to My Calendar",
-  buttonTemplate: { caret: "right" },
-  buttonIconClass: "react-add-to-calendar__icon--",
-  useFontAwesomeIcons: true,
+  buttonTemplate: { textOnly: "none" },
   buttonWrapperClass: "react-add-to-calendar__wrapper",
-  displayItemIcons: true,
   optionsOpen: false,
   dropdownClass: "react-add-to-calendar__dropdown",
   event: {
